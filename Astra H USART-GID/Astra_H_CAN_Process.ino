@@ -41,19 +41,20 @@ void CAN_message_process(CanMsg *can_msg){
           }
           break;
         }
-      case MS_MEDIA_BUTTONS_ID: {
-          if ((can_msg->Data[0] == BTN_PRESSED) &&
-              ((can_msg->Data[1]) > 0x30) &&
-              ((can_msg->Data[1]) < 0x35) &&
-              ((can_msg->Data[2]) == 0x00))
-            d_mode = int((can_msg->Data[1]) - 0x30);
-          if ((can_msg->Data[1]) == MS_BTN_OK)
-            d_mode = 0;
-#ifdef DEBUG
-          Serial2.print("MEDIA BUTTON PRESS: " + d_mode);
-#endif
-          break;
+    case MS_MEDIA_BUTTONS_ID: {
+        switch (can_msg->Data[1]) {
+          case MS_BTN_OK: {
+              break;
+            }
+         case MS_BTN_RIHGT: {
+              break;
+            }
+         case MS_BTN_LEFT: {
+              break;
+            }       
         }
+        break;
+      }
     case MS_MEDIA_ID: {                                                   //If EHU in AUX-Mode
         Pause_Update_DIS = millis();
         if (((can_msg->Data[0]) == 0x10) && AUX_mode)  {
