@@ -54,36 +54,38 @@ void CAN_message_process(CanMsg *can_msg){
 #endif
           break;
         }
-      case MS_MEDIA_ID: {                                                   //If EHU in AUX-Mode
-          Pause_Update_DIS = millis();
-          if (((can_msg->Data[0]) == 0x10) && AUX_mode)  {
-            delay(1);
-            SendCANmessage(MS_MEDIA_ID, 8, 0x21, 0x3A, 0xC0, 0x00, 0x37, 0x03, 0x10, 0x1A); //Corrupt message
+    case MS_MEDIA_ID: {                                                   //If EHU in AUX-Mode
+        Pause_Update_DIS = millis();
+        if (((can_msg->Data[0]) == 0x10) && AUX_mode)  {
+          delay(1);
+          SendCANmessage(MS_MEDIA_ID, 8, 0x21, 0x3A, 0xC0, 0x00, 0x37, 0x03, 0x10, 0x1A); //Corrupt message
+          P_Update_DIS = millis();
+          Update_DIS = 1;
 #ifdef DEBUG
-            Serial2.print("\nCorrupt message");
+          Serial2.print("\nCorrupt message");
 #endif
-          }
-          if ((can_msg->Data[0]) == 0x24) {
-            if (((can_msg->Data[3]) != 0x41) && ((can_msg->Data[5]) != 0x75) && ((can_msg->Data[7]) != 0x78))
-            {
-              AUX_mode = 0;
-#ifdef DEBUG
-              Serial2.print("\nAUX OFF");
-#endif
-            }
-            else {
-              if (AUX_mode == 0) {
-                delay(200);
-                AUX_mode = 1;
-#ifdef DEBUG
-                Serial2.print("\nAUX ON");
-#endif
-              }
-            }
-          }
-
-          break;
         }
+        if ((can_msg->Data[0]) == 0x24) {
+          if (((can_msg->Data[3]) != 0x41) && ((can_msg->Data[5]) != 0x75) && ((can_msg->Data[7]) != 0x78))
+          {
+            AUX_mode = 0;
+#ifdef DEBUG
+            Serial2.print("\nAUX OFF");
+#endif
+          }
+          else {
+            if (AUX_mode == 0) {
+              delay(50);
+              AUX_mode = 1;
+#ifdef DEBUG
+              Serial2.print("\nAUX ON");
+#endif
+            }
+          }
+        }
+
+        break;
+      }
       case MS_ECC_ID: {
           if (can_msg->Data[0] == MS_BATTERY) {
             VOLTAGE = (can_msg->Data[2]);
