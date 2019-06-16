@@ -154,7 +154,7 @@ void loop() {
     Time_Update_Message = millis();
   }
   //******************************* Parameter display **********************************
-  if (((millis() - Time_Update_Message) > 3000) && !alarm) {
+  if (((millis() - Time_Update_Message) > 500) && !alarm) {
     message = Normal(data_to_str(T_ENG, 0)) + "°C" + "/" + data_to_str(VOLTAGE, 1) + "V";
     message += Right(Bold("USB:232/480"));
     Time_Update_Message = millis();  //To return to the main message after receiving a USART message
