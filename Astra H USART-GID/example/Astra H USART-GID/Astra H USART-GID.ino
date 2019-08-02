@@ -16,7 +16,7 @@
 #define MS_BTN_9 0x39
 #define MS_BTN_OK 0x6F
 #define MS_BTN_RIHGT 0x6C
-#define MS_BTN_LEFT 0xD6
+#define MS_BTN_LEFT 0x6D
 #define MS_BTN_CD_RADIO 0xE0
 #define MS_BTN_SETTINGS 0xFF
 #define MS_WHEEL_BUTTONS_ID 0x206
