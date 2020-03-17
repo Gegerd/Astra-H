@@ -60,8 +60,6 @@ void CAN_message_process(CanMsg *can_msg){
         if (((can_msg->Data[0]) == 0x10) && AUX_mode)  {
           delay(1);
           SendCANmessage(MS_MEDIA_ID, 8, 0x21, 0x3A, 0xC0, 0x00, 0x37, 0x03, 0x10, 0x1A); //Corrupt message
-          P_Update_DIS = millis();
-          Update_DIS = 1;
 #ifdef DEBUG
           Serial2.print("\nCorrupt message");
 #endif
