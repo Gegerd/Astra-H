@@ -62,7 +62,6 @@
 bool alarm = 0;
 bool Blink = 0;
 bool AUX_mode = 1;
-bool Update_DIS=0;
 int VOLTAGE = 131;
 int T_ENG = 1000;
 int SPEED = 0;
@@ -73,11 +72,9 @@ uint32_t time_send = 0;                 //Variable for the burst transfer timer 
 uint32_t Time_USART = 0;                //Variable for the USART buffer fill timer
 uint32_t Time_Update_Message = 0;       //Variable for return to the main message after receiving a USART message
 uint32_t Pause_Update_DIS = 0;          //Variable to pause the DIS update for the duration of the data transfer EHU
-uint32_t P_Update_DIS = 0; 
 String Prev_Message;
 String Message_USART;
 String message = "Starting Shild";
-String p_message ="";
 
 //********************************Tab function prototypes*****************************//
 //Announcement of function prototypes from other tabs for correct function call.
@@ -165,13 +162,10 @@ void loop() {
      canBus.free();
     }
 //******************************* Update display **********************************
-  if ( AUX_mode && ((millis() - time_send) > 500)&& 
-     ((Update_DIS &&((millis() - Pause_Update_DIS) > 50))||
-     (p_message!= message )&&((millis() - P_Update_DIS) < 4500))) { //Update display
+ if (AUX_mode && ((millis() - time_send) > 350) &&
+        (((millis() - Pause_Update_DIS) > 50))&& ((millis() - Pause_Update_DIS) < 4700)) { //Update display
     message_to_DIS(message);
-    p_message=message;
     time_send = millis();
-    Update_DIS=0;
     if (Blink) Blink = 0;
     else Blink = 1;
 #ifdef DEBUG
