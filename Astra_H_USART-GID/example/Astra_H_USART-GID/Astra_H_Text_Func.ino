@@ -5,38 +5,40 @@
 static byte data[255];  //Data Buffer for Package Preparation
 static int data_lenght = 5;  //Useful length of data array for package preparation
 
+//******************** Transliteration array for Cirillic UTF-8  ********************************//
+
+String trans1[48]={"A","B","V","G","D","E","Zh","Z","I","I","K","L","M","N","O","P","R","S","T","U","F","Kh","C","Ch","Sh","Sh","#","I","`","E","Yu","Ya","a","b","v","g","d","e","zh","z","i","i","k","l","m","n","o","p"};
+String trans2[16]={"r","s","t","u","f","kh","c","ch","sh","sh","#","i","`","e","yu","ya"};
+
 // ******************* UTF8-Decoder: convert UTF8-string to extended ASCII ***********************
 static byte c1;  // Last character buffer
 // Convert a single Character from UTF8 to Extended ASCII
 // Return "0" if a byte has to be ignored
 
-byte utf8ascii(byte ascii) {
-  if ( ascii < 128 ) // Standard ASCII-set 0..0x7F handling
-  { c1 = 0;
-    return ( ascii );
-  }
-  // get previous input
-  byte last = c1;   // get last char
-  c1 = ascii;       // remember actual character
-  switch (last)     // conversion depending on first UTF8-character
-  { case 0xC2: return  (ascii);  break;
-    case 0xC3: return  (ascii | 0xC0);  break;
-    case 0x82: if (ascii == 0xAC) return (0x80);   // special case Euro-symbol
-  }
-  return  (0);                                     // otherwise: return zero, if character has to be ignored
-}
-// convert String object from UTF8 String to Extended ASCII
+
 String utf8ascii(String s)
 {
   String r = "";
-  char c;
+  char c; 
+  byte c1 = 0;	
   for (int i = 0; i < s.length(); i++)
-  {
-    c = utf8ascii(s.charAt(i));
-    if (c != 0) r += c;
+  {	c = s.charAt(i);
+	   if ( c < 128 ) // Standard ASCII-set 0..0x7F handling
+		{ c1 = 0; r += c;}    // get last char		
+  else {
+  switch (c1)     // conversion depending on first UTF8-character
+  { case 0xC2: r += c;  break;
+    case 0xC3: r += (c | 0xC0);  break;
+	  case 0x82: if (c == 0xAC) r += 0x80;  break; // special case Euro-symbol
+	  case 0xD0: if (c>=0x90&&c<=0xBF) r += trans1[c-0x90];  break; //Translit Cirillic UTF-8
+    case 0xD1: if (c>=0x80&&c<=0x8F) r += trans2[c-0x80];  break;	//Translit Cirillic UTF-8 
+	  }
   }
+  c1 = c;       // remember actual character
+}
   return r;
 }
+
 // ******************* Append bytes to the end of the array ***********************
 void byte_append(byte add_byte)
 {
