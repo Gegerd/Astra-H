@@ -29,8 +29,8 @@ String utf8ascii(String s)
   switch (c1)     // conversion depending on first UTF8-character
   { case 0xC2: r += c;  break;
     case 0xC3: r += (c | 0xC0);  break;
-	  case 0x82: if (c == 0xAC) r += 0x80;  break; // special case Euro-symbol
-	  case 0xD0: if (c>=0x90&&c<=0xBF) r += trans1[c-0x90];  break; //Translit Cirillic UTF-8
+    case 0x82: if (c == 0xAC) r += 0x80;  break; // special case Euro-symbol
+    case 0xD0: if (c>=0x90&&c<=0xBF) r += trans1[c-0x90];  break; //Translit Cirillic UTF-8
     case 0xD1: if (c>=0x80&&c<=0x8F) r += trans2[c-0x80];  break;	//Translit Cirillic UTF-8 
 	  }
   }
