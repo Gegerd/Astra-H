@@ -58,8 +58,10 @@ void CAN_message_process(CanMsg *can_msg){
     case MS_MEDIA_ID: {                                                   //If EHU in AUX-Mode
         Pause_Update_DIS = millis();
         if (((can_msg->Data[0]) == 0x10) && AUX_mode)  {
+        //if (((can_msg->Data[0]) == 0x21) && AUX_mode)  {      // test on two-line GID     
           delay(1);
           SendCANmessage(MS_MEDIA_ID, 8, 0x21, 0x3A, 0xC0, 0x00, 0x37, 0x03, 0x10, 0x1A); //Corrupt message
+          //SendCANmessage(MS_MEDIA_ID, 8, 0x21, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF);   //Corrupt message, test on two-line GID
 #ifdef DEBUG
           Serial2.print("\nCorrupt message");
 #endif
