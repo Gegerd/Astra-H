@@ -98,7 +98,7 @@ void message_to_DIS (String title)
       num += 1;
       if (num == 16) num = 0;
       SendCANmessage(MS_MEDIA_ID, 8, line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7]);
-     // delay(3); //For two-line display, testing
+      delay(3); 
       pos = 0;
       line[pos] = byte(num + 32);
       pos += 1;
