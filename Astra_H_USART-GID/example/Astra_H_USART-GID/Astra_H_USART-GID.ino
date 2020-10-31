@@ -66,6 +66,7 @@ int VOLTAGE = 131;
 int T_ENG = 1000;
 int SPEED = 0;
 int RPM = 0;
+bool Sound = false;
 uint32_t btn=0;
 uint32_t time_request_ecc = 0;          //Variable for the parameter request timer from ECC
 uint32_t time_send = 0;                 //Variable for the burst transfer timer in CAN
