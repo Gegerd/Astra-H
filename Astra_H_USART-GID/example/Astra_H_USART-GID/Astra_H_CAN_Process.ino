@@ -57,7 +57,7 @@ void CAN_message_process(CanMsg *can_msg){
       }
     case MS_MEDIA_ID: {                                                   //If EHU in AUX-Mode
         Pause_Update_DIS = millis();
-        if (((can_msg->Data[0]) == 0x10) && AUX_mode)  {
+        if (((can_msg->Data[0]) == 0x10) && ((can_msg->Data[1]) == 0x22) && ((can_msg->Data[2]) != 0x40) && AUX_mode)  {
         //if (((can_msg->Data[0]) == 0x21) && AUX_mode)  {      // test on two-line GID     
           delay(1);
           SendCANmessage(MS_MEDIA_ID, 8, 0x21, 0x3A, 0xC0, 0x00, 0x37, 0x03, 0x10, 0x1A); //Corrupt message
@@ -66,14 +66,20 @@ void CAN_message_process(CanMsg *can_msg){
           Serial2.print("\nCorrupt message");
 #endif
         }
+      
+         if ((can_msg->Data[0]) == 0x21){ 
+            if ((can_msg->Data[6]) == 0x74){
+              Sound=true;}
+            else Sound=false;}
+      
         if ((can_msg->Data[0]) == 0x24) {
           if (((can_msg->Data[3]) != 0x41) && ((can_msg->Data[5]) != 0x75) && ((can_msg->Data[7]) != 0x78))
-          {
-            AUX_mode = 0;
+          { if (!Sound) {
+            AUX_mode = false;
 #ifdef DEBUG
             Serial2.print("\nAUX OFF");
 #endif
-          }
+          }}
           else {
             if (AUX_mode == 0) {
               delay(50);
