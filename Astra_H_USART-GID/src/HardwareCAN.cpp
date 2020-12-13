@@ -44,6 +44,11 @@ CAN_STATUS HardwareCAN::filter(uint8 idx, CAN_FIFO fifo_, uint32 id, uint32 mask
 	return can_filter(Port, idx, fifo_, CAN_FILTER_32BIT, CAN_FILTER_MASK, id, mask, 0);
 }
 
+CAN_STATUS HardwareCAN::filter(uint8 idx, uint32 id, uint32 mask)
+{
+	return can_filter(Port, idx, CAN_FIFO0, CAN_FILTER_32BIT, CAN_FILTER_MASK, id, mask, 0);
+}
+
 CAN_STATUS HardwareCAN::status(void)
 {
 	return can_status();
