@@ -47,6 +47,8 @@ public:
 	void end(void);
 
 	CAN_STATUS filter(uint8 idx, CAN_FIFO fifo_, uint32 id, uint32 mask);
+	CAN_STATUS filter(uint8 idx, uint32 id, uint32 mask);
+	
 	CAN_STATUS map(CAN_GPIO_MAP remap);
 	CAN_STATUS status(void);
 
